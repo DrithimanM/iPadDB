@@ -33,15 +33,18 @@ const stationUrls = {
   "tunein-uae": "https://tunein.com/embed/player/s32810/",   // Gulf News UAE
 };
 
-let radioPlayer = document.getElementById("radioPlayer");
 const selector = document.getElementById("stationSelector");
+const playerContainer = document.querySelector(".player-container");
 
-// When user changes station selection
 selector.addEventListener("change", (e) => {
   const selected = e.target.value;
   const newSrc = stationUrls[selected];
 
-  // Create a new iframe to force reload on iOS Safari
+  // Remove existing iframe if any
+  const oldIframe = document.getElementById("radioPlayer");
+  if (oldIframe) oldIframe.remove();
+
+  // Create new iframe
   const newIframe = document.createElement("iframe");
   newIframe.id = "radioPlayer";
   newIframe.width = "100%";
@@ -51,14 +54,10 @@ selector.addEventListener("change", (e) => {
   newIframe.style.display = "block";
   newIframe.allowFullscreen = true;
 
-  // Enable autoplay only for NDTV station
-  if(selected === "ndtv") {
+  // Set autoplay only for NDTV
+  if (selected === "ndtv") {
     newIframe.setAttribute("allow", "autoplay");
-  } else {
-    newIframe.removeAttribute("allow");
   }
 
-  // Replace the old iframe with the new one
-  radioPlayer.parentNode.replaceChild(newIframe, radioPlayer);
-  radioPlayer = newIframe;
+  playerContainer.appendChild(newIframe);
 });
