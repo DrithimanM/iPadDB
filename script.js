@@ -7,57 +7,77 @@ setInterval(() => {
 // NDTV 24x7 RSS Feed URL for ticker
 const rssUrl = "https://feeds.feedburner.com/ndtvnews-top-stories";
 
-// Load news headlines for ticker and update every 10 minutes
 async function loadNews() {
   try {
-    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
+    const response = await fetch(
+      `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(
+        rssUrl
+      )}`
+    );
     const data = await response.json();
-    const headlines = data.items.map(item => item.title);
+    const headlines = data.items.map((item) => item.title);
     const tickerText = headlines.join(" ⚫ ");
     document.getElementById("newsTicker").innerHTML = `<div class="ticker-text">${tickerText}</div>`;
   } catch {
-    document.getElementById("newsTicker").innerText = "Unable to load NDTV headlines...";
+    document.getElementById("newsTicker").innerText =
+      "Unable to load NDTV headlines...";
   }
 }
 
 loadNews();
 setInterval(loadNews, 10 * 60 * 1000); // refresh every 10 minutes
 
-// Map station keys to embed URLs
 const stationUrls = {
-  bbc: "https://tunestream.net/player/bbc-world-service/",
-  ndtv: "https://tunestream.net/player/ndtv-24x7/",
-  "tunein-us": "https://tunestream.net/player/cnn/",
-  "tunein-uk": "https://tunestream.net/player/bbc-news/",
-  "tunein-india": "https://tunestream.net/player/aa-times-of-india/",
-  "tunein-uae": "https://tunestream.net/player/gulf-news-uae/",
+  bbc: { type: "audio", src: "http://bbcwssc.ic.llnwd.net/stream/bbcwssc_mp1_ws-eieuk" },
+  ndtv: { type: "audio", src: "http://ndtvradio.cdn.tatacommunications.com/ndtv/ndtv_24x7_64k" },
+  "tunein-us": { type: "iframe", src: "https://tunestream.net/player/cnn/" },
+  "tunein-uk": { type: "iframe", src: "https://tunestream.net/player/bbc-news/" },
+  "tunein-india": { type: "iframe", src: "https://tunestream.net/player/aa-times-of-india/" },
+  "tunein-uae": { type: "iframe", src: "https://tunestream.net/player/gulf-news-uae/" },
 };
 
 const selector = document.getElementById("stationSelector");
 const playerContainer = document.querySelector(".player-container");
 
+function createAudioPlayer(src) {
+  const audio = document.createElement("audio");
+  audio.id = "radioPlayer";
+  audio.controls = true;
+  audio.autoplay = true;
+  audio.src = src;
+  audio.style.width = "100%";
+  audio.style.height = "60px";
+  return audio;
+}
+
+function createIframePlayer(src) {
+  const iframe = document.createElement("iframe");
+  iframe.id = "radioPlayer";
+  iframe.width = "100%";
+  iframe.height = "90";
+  iframe.frameBorder = "0";
+  iframe.src = src;
+  iframe.style.display = "block";
+  iframe.allowFullscreen = true;
+  return iframe;
+}
+
 selector.addEventListener("change", (e) => {
   const selected = e.target.value;
-  const newSrc = stationUrls[selected];
+  const station = stationUrls[selected];
 
-  // Remove existing iframe if any
-  const oldIframe = document.getElementById("radioPlayer");
-  if (oldIframe) oldIframe.remove();
+  // Remove existing player
+  const oldPlayer = document.getElementById("radioPlayer");
+  if (oldPlayer) oldPlayer.remove();
 
-  // Create new iframe
-  const newIframe = document.createElement("iframe");
-  newIframe.id = "radioPlayer";
-  newIframe.width = "100%";
-  newIframe.height = "90";
-  newIframe.frameBorder = "0";
-  newIframe.src = newSrc;
-  newIframe.style.display = "block";
-  newIframe.allowFullscreen = true;
+  if (!station) return;
 
-  // Set autoplay only for NDTV
-  if (selected === "ndtv") {
-    newIframe.setAttribute("allow", "autoplay");
+  let newPlayer;
+  if (station.type === "audio") {
+    newPlayer = createAudioPlayer(station.src);
+  } else if (station.type === "iframe") {
+    newPlayer = createIframePlayer(station.src);
   }
 
-  playerContainer.appendChild(newIframe);
+  playerContainer.appendChild(newPlayer);
 });
