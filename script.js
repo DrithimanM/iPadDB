@@ -1,12 +1,13 @@
-// Live Clock
+// Live Clock - updates every second
 setInterval(() => {
   const now = new Date();
   document.getElementById("clock").innerText = now.toLocaleTimeString();
 }, 1000);
 
-// NDTV 24x7 RSS Feed for ticker (only NDTV to keep simple)
+// NDTV 24x7 RSS Feed URL for ticker
 const rssUrl = "https://feeds.feedburner.com/ndtvnews-top-stories";
 
+// Load news headlines for ticker and update every 10 minutes
 async function loadNews() {
   try {
     const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`);
@@ -20,9 +21,9 @@ async function loadNews() {
 }
 
 loadNews();
-setInterval(loadNews, 10 * 60 * 1000);
+setInterval(loadNews, 10 * 60 * 1000); // refresh every 10 minutes
 
-// Station URLs mapping
+// Map station keys to embed URLs
 const stationUrls = {
   bbc: "https://tunestream.net/player/bbc-world-service/",
   ndtv: "https://tunestream.net/player/ndtv-24x7/",
@@ -32,17 +33,32 @@ const stationUrls = {
   "tunein-uae": "https://tunein.com/embed/player/s32810/",   // Gulf News UAE
 };
 
-const radioPlayer = document.getElementById("radioPlayer");
+let radioPlayer = document.getElementById("radioPlayer");
 const selector = document.getElementById("stationSelector");
 
+// When user changes station selection
 selector.addEventListener("change", (e) => {
   const selected = e.target.value;
-  radioPlayer.src = stationUrls[selected];
-  
-  // Control autoplay for NDTV only
-  if(selected === "ndtv"){
-    radioPlayer.setAttribute("allow", "autoplay");
+  const newSrc = stationUrls[selected];
+
+  // Create a new iframe to force reload on iOS Safari
+  const newIframe = document.createElement("iframe");
+  newIframe.id = "radioPlayer";
+  newIframe.width = "100%";
+  newIframe.height = "90";
+  newIframe.frameBorder = "0";
+  newIframe.src = newSrc;
+  newIframe.style.display = "block";
+  newIframe.allowFullscreen = true;
+
+  // Enable autoplay only for NDTV station
+  if(selected === "ndtv") {
+    newIframe.setAttribute("allow", "autoplay");
   } else {
-    radioPlayer.removeAttribute("allow");
+    newIframe.removeAttribute("allow");
   }
+
+  // Replace the old iframe with the new one
+  radioPlayer.parentNode.replaceChild(newIframe, radioPlayer);
+  radioPlayer = newIframe;
 });
