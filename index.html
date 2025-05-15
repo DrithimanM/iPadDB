@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -10,25 +10,27 @@
   <div class="clock" id="clock">--:--:--</div>
   <div class="ticker" id="newsTicker">Loading headlines...</div>
   
-  <!-- BBC World Service audio player WITHOUT autoplay -->
-  <iframe
-    src="https://tunestream.net/player/bbc-world-service/"
-    width="100%"
-    height="90"
-    frameborder="0"
-    allowfullscreen>
-  </iframe>
+  <div class="player-container">
+    <select id="stationSelector" aria-label="Select radio station">
+      <option value="bbc" selected>BBC World Service</option>
+      <option value="ndtv">NDTV 24x7</option>
+      <option value="tunein-us">TuneIn USA (CNN)</option>
+      <option value="tunein-uk">TuneIn UK (BBC News)</option>
+      <option value="tunein-india">TuneIn India (Times of India)</option>
+      <option value="tunein-uae">TuneIn UAE (Gulf News)</option>
+    </select>
 
-  <!-- NDTV 24x7 audio player WITH autoplay -->
-  <iframe
-    src="https://tunestream.net/player/ndtv-24x7/"
-    width="100%"
-    height="90"
-    frameborder="0"
-    allow="autoplay"
-    allowfullscreen>
-  </iframe>
-  
+    <iframe
+      id="radioPlayer"
+      src="https://tunestream.net/player/bbc-world-service/"
+      width="100%"
+      height="90"
+      frameborder="0"
+      allowfullscreen
+      allow="autoplay">
+    </iframe>
+  </div>
+
   <script src="script.js"></script>
 </body>
 </html>
