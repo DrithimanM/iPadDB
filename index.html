@@ -1,34 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Wall-Mounted Radio Dashboard</title>
+  <title>Kiosk Radio Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="clock" id="clock">--:--:--</div>
-  <div class="ticker" id="newsTicker">Loading headlines...</div>
-  
-  <div class="player-container">
+  <div class="container">
+    <div id="clock" class="clock">--:--:--</div>
+
+    <div id="newsTicker" class="news-ticker">Loading news...</div>
+
     <select id="stationSelector" aria-label="Select radio station">
-      <option value="bbc" selected>BBC World Service</option>
+      <option value="">Select Station</option>
+      <option value="bbc">BBC World Service</option>
       <option value="ndtv">NDTV 24x7</option>
-      <option value="tunein-us">TuneIn USA (CNN)</option>
-      <option value="tunein-uk">TuneIn UK (BBC News)</option>
-      <option value="tunein-india">TuneIn India (Times of India)</option>
-      <option value="tunein-uae">TuneIn UAE (Gulf News)</option>
+      <option value="tunein-us">CNN (US)</option>
+      <option value="tunein-uk">BBC News (UK)</option>
+      <option value="tunein-india">Times of India</option>
+      <option value="tunein-uae">Gulf News (UAE)</option>
     </select>
 
-    <iframe
-      id="radioPlayer"
-      src="https://tunestream.net/player/bbc-world-service/"
-      width="100%"
-      height="90"
-      frameborder="0"
-      allowfullscreen
-      allow="autoplay">
-    </iframe>
+    <div class="player-container"></div>
   </div>
 
   <script src="script.js"></script>
