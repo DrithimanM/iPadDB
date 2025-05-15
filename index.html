@@ -2,14 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Wall-Mounted Radio Dashboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="clock" id="clock">--:--:--</div>
   <div class="ticker" id="newsTicker">Loading headlines...</div>
-  <iframe id="radioPlayer" src="https://www.bbc.co.uk/sounds/play/live:bbc_world_service" allow="autoplay" allowfullscreen></iframe>
+  
+  <!-- BBC World Service audio player WITHOUT autoplay -->
+  <iframe
+    src="https://tunestream.net/player/bbc-world-service/"
+    width="100%"
+    height="90"
+    frameborder="0"
+    allowfullscreen>
+  </iframe>
+
+  <!-- NDTV 24x7 audio player WITH autoplay -->
+  <iframe
+    src="https://tunestream.net/player/ndtv-24x7/"
+    width="100%"
+    height="90"
+    frameborder="0"
+    allow="autoplay"
+    allowfullscreen>
+  </iframe>
+  
   <script src="script.js"></script>
 </body>
 </html>
