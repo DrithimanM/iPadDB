@@ -27,10 +27,10 @@ setInterval(loadNews, 10 * 60 * 1000); // refresh every 10 minutes
 const stationUrls = {
   bbc: "https://tunestream.net/player/bbc-world-service/",
   ndtv: "https://tunestream.net/player/ndtv-24x7/",
-  "tunein-us": "https://tunein.com/embed/player/s24953/",    // CNN US
-  "tunein-uk": "https://tunein.com/embed/player/s27588/",    // BBC News UK
-  "tunein-india": "https://tunein.com/embed/player/s26657/", // Times of India
-  "tunein-uae": "https://tunein.com/embed/player/s32810/",   // Gulf News UAE
+  "tunein-us": "https://tunestream.net/player/cnn/",
+  "tunein-uk": "https://tunestream.net/player/bbc-news/",
+  "tunein-india": "https://tunestream.net/player/aa-times-of-india/",
+  "tunein-uae": "https://tunestream.net/player/gulf-news-uae/",
 };
 
 const selector = document.getElementById("stationSelector");
